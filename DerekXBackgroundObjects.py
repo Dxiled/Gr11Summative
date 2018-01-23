@@ -32,9 +32,9 @@ class bgObject(object):
                 self.item = randint(0,3)
         self.X -= mouse
         if left:
-            self.X -= 2
-        if right:
             self.X += 2
+        if right:
+            self.X -= 2
         if self.X < -100:
             self.X = 700
             self.Y = randint(575,800)
