@@ -13,7 +13,6 @@ import os
 from DerekXPlayerControl import *
 from DerekXFishControl import *
 from DerekXKeyFormulas import *
-from DerekXGameMap import *
 from DerekXBackgroundObjects import *
 
 init()          #Setting up pygame and os window
@@ -95,9 +94,11 @@ resumeText = menuFont.render("Resume",False,(0,0,100))                  #
 mainMenuText = menuFont.render("Main Menu",False,(100,0,0))             #Renders general text
 nextText = menuFont.render("Next",False,(0,0,0))                        #
 backText = menuFont.render("Back",False,(0,0,0))                        #
+chooseText = menuFont.render("Choose your character:",False,(0,0,0))    #
 dolphinText = charFont.render("Dolphin (+speed)",False,(0,0,100))       #
 turtleText = charFont.render("Turtle (-hunger)",False,(0,0,100))        #
 sharkText = charFont.render("Shark (++speed,+hunger)",False,(0,0,100))  #
+gameoverText = menuFont.render("GAME OVER",False,(0,0,0))               #
 
 playWidth = playText.get_width()                    #
 instructionWidth = instructionText.get_width()      #
@@ -107,6 +108,8 @@ resumeWidth = resumeText.get_width()                #
 mainMenuWidth = mainMenuText.get_width()            #
 nextWidth = nextText.get_width()                    #
 backWidth = backText.get_width()                    #
+chooseWidth = chooseText.get_width()                #
+gameoverWidth = gameoverText.get_width()            #
 
 instructionState = 0        #Initializes instructions controller
 
@@ -163,7 +166,6 @@ while running:
                 mode = CHARSELECT
                 for fish in fishList:
                     fish.kill()         #Resets fish
-                    fish.countDown -= 300
                     player.alive = False    #Resets player
         elif menuButton2.collidepoint(mousePos):
             draw.rect(screen,(0,0,255),menuButton2)
@@ -198,6 +200,10 @@ while running:
         player.move(w,a,s,d,mouseMovement)      #Moves the player based on input
         player.get_health()                     #Tracks player's hunger bar
         if not player.alive:        #Detects the death
+            screen.fill((255,0,0))      #Draws and displays a game over screen
+            screen.blit(gameoverText,(350-gameoverWidth//2,330))
+            display.flip()
+            time.wait(3000)
             mode = MENU
             docR = open("DerekXHighscore.dat",'r')      #Checks the highscore
             highscore = int(docR.readline())
@@ -298,7 +304,6 @@ while running:
                     mode = CHARSELECT
                     for fish in fishList:
                         fish.kill()
-                        fish.countDown -= 300
                         player.alive = False
         elif backButton.collidepoint(mousePos):
             draw.rect(screen,(0,0,255),backButton)
@@ -317,6 +322,7 @@ while running:
         mouse.set_visible(True)            #Reuses the main menu again
         for x in range(0,601,100):
             screen.blit(background,(x,0))
+        screen.blit(chooseText,(350-chooseWidth//2,200))
         draw.rect(screen,(0,0,200),menuButton1)
         draw.rect(screen,(0,0,200),menuButton2)
         draw.rect(screen,(0,0,200),menuButton3)

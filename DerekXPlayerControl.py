@@ -44,14 +44,14 @@ class playerControl(object):        #Defines player class
             bufferX = self.X
             bufferY = self.Y
             self.angle -= mouserel[0]*pi/2048     
-            if self.charType == 0:
+            if self.charType == 0:      #Determines speed based on character (slow turtle, medium dolphin, fast shark)
                 speed = 3
             elif self.charType == 1:
                 speed = 2
             else:
                 speed = 4
             if upkey:
-                for count in range(speed):
+                for count in range(speed):          #Moved based on speed and angle of the player
                     bufferX += cos(self.angle)
                     bufferY += sin(self.angle)
             if leftkey:
@@ -70,10 +70,10 @@ class playerControl(object):        #Defines player class
             self.Y = round(bufferY)
             self.angle %= 2*pi
     
-    def get_health(self):
+    def get_health(self):           #Applys health decay
         if self.alive:
             self.health -= self.decay
-            if self.health <= 0:
+            if self.health <= 0:        #Kills player if health falls below 0
                 self.X = 0
                 self.Y = 0
                 self.alive = False
